@@ -31,11 +31,13 @@ var (
 	rrdFile    string = "data.rrd"
 	rrdUpdater *rrd.Updater
 	devicePath string = "/dev/ttyACM0"
+	httpBind   string = ":9998"
 )
 
 func init() {
 	flag.StringVar(&rrdFile, "rrd-file", "data.rrd", "filename to store RRD data in")
 	flag.StringVar(&devicePath, "device", "/dev/ttyACM0", "device to use")
+	flag.StringVar(&httpBind, "bind", ":9998", "address:port to bind for HTTP")
 }
 
 func setupRRD() {
@@ -75,7 +77,7 @@ func main() {
 	go maintainStatus(p)
 	defer p.Stop()
 	http.HandleFunc("/status", statusHandler)
-	log.Fatal(http.ListenAndServe(":9998", nil))
+	log.Fatal(http.ListenAndServe(httpBind, nil))
 }
 
 func maintainStatus(p *probe.Probe) {

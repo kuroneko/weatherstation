@@ -54,7 +54,7 @@ func setupHumidityGraph() (g *rrd.Grapher) {
 	g.GPrint("min", "Minimum = %2.1lf%%")
 	g.GPrint("avg", "Mean = %2.1lf%%")
 	g.GPrint("max", "Maximum = %2.1lf%%")
-	g.SetSize(800, 300)
+	g.SetSize(800, 150)
 
 	// lesigh.  no magic for this one - we have to do it ourselves.
 	g.AddOptions("-y", "5.0:2")

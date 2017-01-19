@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<title>WeatherStation</title>
+		<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<h1>WeatherStation</h1>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<dl class="dl-horizontal">
+						<dt>Temperature</dt>
+						<dd id="curTemp"></dd>
+						<dt>Humidity</dt>
+						<dd id="curHumidity"></dd>
+						<dt>Door Status</dt>
+						<dd id="doorStatus"></dd>
+					</dl>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<div class="btn-group" role="group" id="gGroup">
+						<button type="button" class="btn btn-default active" id="gDay">Day</button>
+						<button type="button" class="btn btn-default" id="gWeek">Week</button>
+						<button type="button" class="btn btn-default" id="gMonth">Month</button>
+						<button type="button" class="btn btn-default" id="gYear">Year</button>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12" id="tempGraph">
+					<img src="/g/temp/day">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12" id="humidityGraph">
+					<img src="/g/humidity/day">
+				</div>
+			</div>
+		</div>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="/static/js/bootstrap.min.js"></script>
+		<script src="/static/js/wxstation.js"></script>
+	</body>
+</html>
