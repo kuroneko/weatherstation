@@ -4,6 +4,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"github.com/ziutek/rrd"
 	"log"
@@ -29,7 +30,13 @@ var (
 
 	rrdFile    string = "data.rrd"
 	rrdUpdater *rrd.Updater
+	devicePath string = "/dev/ttyACM0"
 )
+
+func init() {
+	flag.StringVar(&rrdFile, "rrd-file", "data.rrd", "filename to store RRD data in")
+	flag.StringVar(&devicePath, "device", "/dev/ttyACM0", "device to use")
+}
 
 func setupRRD() {
 	c := rrd.NewCreator(rrdFile, time.Now(), SensorTickRate)
@@ -56,7 +63,9 @@ func setupRRD() {
 }
 
 func main() {
-	p, err := probe.Open("/dev/ttyACM0")
+	flag.Parse()
+
+	p, err := probe.Open(devicePath)
 	if err != nil {
 		fmt.Printf("Failed: %s\n", err)
 		os.Exit(1)
@@ -66,8 +75,6 @@ func main() {
 	go maintainStatus(p)
 	defer p.Stop()
 	http.HandleFunc("/status", statusHandler)
-	http.HandleFunc("/g/temp", tempDayGraphHandler)
-	http.HandleFunc("/g/humidity", humidityDayGraphHandler)
 	log.Fatal(http.ListenAndServe(":9998", nil))
 }
 
@@ -117,74 +124,4 @@ func statusHandler(resp http.ResponseWriter, req *http.Request) {
 		r.DoorStatus = 0
 	}
 	jenc.Encode(r)
-}
-
-func setupTemperatureGraph() (g *rrd.Grapher) {
-	g = rrd.NewGrapher()
-	g.SetTitle("Temperature")
-	g.SetWatermark("wxstation")
-	g.Def("temp", rrdFile, dsTemperature, "AVERAGE")
-	g.VDef("avg", "temp,AVERAGE")
-	//g.SetAltAutoscale()
-	//g.VDef("min", "temp,MINNAN")
-	//g.VDef("max", "temp,MAX")
-	g.Line(1.0, "temp", "ff0000", "Temperature (C)")
-	//g.Print("min", "Minimum = %3.1lfC")
-	g.GPrint("avg", "Mean = %3.1lfC")
-	//g.Print("max", "Maximum = %3.1lfC")
-	g.SetSize(800, 300)
-
-	// lesigh.  no magic for this one - we have to do it ourselves.
-	g.AddOptions("-y", "0.5:2")
-	//g.AddOptions("--left-axis-format", "%3.1lf")
-
-	return g
-}
-
-func setupHumidityGraph() (g *rrd.Grapher) {
-	g = rrd.NewGrapher()
-	g.SetTitle("Humidity")
-	g.SetWatermark("wxstation")
-	g.Def("humidity", rrdFile, dsHumidity, "AVERAGE")
-	g.VDef("avg", "humidity,AVERAGE")
-	//g.SetAltAutoscale()
-	//g.VDef("min", "temp,MINNAN")
-	//g.VDef("max", "temp,MAX")
-	g.Line(1.0, "humidity", "00ff00", "Humidity (%)")
-	//g.Print("min", "Minimum = %3.1lfC")
-	g.GPrint("avg", "Mean = %2.1lf%%")
-	//g.Print("max", "Maximum = %3.1lfC")
-	g.SetSize(800, 300)
-
-	// lesigh.  no magic for this one - we have to do it ourselves.
-	g.AddOptions("-y", "5.0:2")
-	//g.AddOptions("--left-axis-format", "%2.0lf")
-
-	return g
-}
-
-func tempDayGraphHandler(resp http.ResponseWriter, req *http.Request) {
-	g := setupTemperatureGraph()
-
-	now := time.Now()
-	_, buf, err := g.Graph(now.Add(-24*time.Hour), now)
-	if err != nil {
-		resp.WriteHeader(500)
-		log.Println(err)
-		return
-	}
-	resp.Write(buf)
-}
-
-func humidityDayGraphHandler(resp http.ResponseWriter, req *http.Request) {
-	g := setupHumidityGraph()
-
-	now := time.Now()
-	_, buf, err := g.Graph(now.Add(-24*time.Hour), now)
-	if err != nil {
-		resp.WriteHeader(500)
-		log.Println(err)
-		return
-	}
-	resp.Write(buf)
 }

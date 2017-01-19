@@ -8,9 +8,10 @@ all:	bin/wxstation
 ALLSOURCES=\
 	src/probe/probe.go \
 	src/wxstation/main.go \
+	src/wxstation/graph.go \
 
 
-bin/wxstation:	src/wxstation/main.go
+bin/wxstation:	$(ALLSOURCES)
 	go install -a wxstation
 
 deps:
