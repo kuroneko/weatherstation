@@ -136,7 +136,7 @@ func setupTemperatureGraph() (g *rrd.Grapher) {
 
 	// lesigh.  no magic for this one - we have to do it ourselves.
 	g.AddOptions("-y", "0.5:2")
-	g.AddOptions("--left-axis-format", "%3.1lf")
+	//g.AddOptions("--left-axis-format", "%3.1lf")
 
 	return g
 }
@@ -158,7 +158,7 @@ func setupHumidityGraph() (g *rrd.Grapher) {
 
 	// lesigh.  no magic for this one - we have to do it ourselves.
 	g.AddOptions("-y", "5.0:2")
-	g.AddOptions("--left-axis-format", "%2.0lf")
+	//g.AddOptions("--left-axis-format", "%2.0lf")
 
 	return g
 }
