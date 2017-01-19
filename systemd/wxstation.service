@@ -1,0 +1,13 @@
+[Unit]
+Description=Server-room Weather Station
+After=dev-ttyACM0.device
+BindsTo=dev-ttyACM0.device
+Requisite=dev-ttyACM0.device
+
+[Service]
+WorkingDirectory=/usr/local/wxstation
+Type=simple
+ExecStart=/usr/local/wxstation/bin/wxstation
+
+[Install]
+WantedBy=dev-ttyACM0.device
