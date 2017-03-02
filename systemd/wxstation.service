@@ -1,5 +1,6 @@
 [Unit]
 Description=Server-room Weather Station
+After=network.target
 After=dev-ttyACM0.device
 BindsTo=dev-ttyACM0.device
 Requisite=dev-ttyACM0.device
