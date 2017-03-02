@@ -23,9 +23,10 @@ See the notes in `hw/` on how to connect up the Arduino.
 Ensure you have the `librrd` headers installed before build.
 
 ```
-export GOPATH=$(pwd)
-go install wxstation
+make
 ```
+
+(The Makefile just invokes `go build` after setting GOPATH appropriately)
 
 # Running the software
 
@@ -59,3 +60,8 @@ For example:
 Which indicates a temperature of 28C, relative humidity of 28%, that both the
 temperature and humidity datums were updated 1 second ago, and the door
 sense wire is currently high.
+
+# License
+
+This software is distributed under the 2-Clause BSD License.  Please see 
+`COPYING` for specifics.
