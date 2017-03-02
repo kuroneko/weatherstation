@@ -1,4 +1,6 @@
-// main.go
+// weatherstation
+//
+// Copyright (C) 2017 Christopher Collins
 //
 package main
 

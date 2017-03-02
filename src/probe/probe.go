@@ -1,3 +1,7 @@
+// weatherstation
+//
+// Copyright (C) 2017 Christopher Collins
+//
 package probe
 
 import (

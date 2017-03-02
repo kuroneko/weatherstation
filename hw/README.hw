@@ -2,7 +2,8 @@ The hardware for the probe is a simple Arduino (I used a Leonardo clone)
 with a DHT11 wired up with the data/comms pin to Arduino pin 2.
 
 Arudino pin 3 is used to check the status of a related door, but could be
-used for any switch you need to monitor.
+used for any switch you need to monitor.  This pin should be pulled low by 
+the switch.
 
 The sketch in src/ needs the libraries in libraries/.  You can install the 
 copies from here, or you can pull them down yourself into your Arduino IDE -
